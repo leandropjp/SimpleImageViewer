@@ -39,14 +39,6 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let cell = collectionView.cellForItem(at: indexPath) as! ImageCell
-//
-//        let configuration = ImageViewerConfiguration { config in
-//            config.imageView = cell.imageView
-//        }
-//
-//        present(ImageViewerController(configuration: configuration), animated: true)
-
         let vc = PagingViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : 20])
         vc.images = images.compactMap({$0})
         present(vc, animated: true)

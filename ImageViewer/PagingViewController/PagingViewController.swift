@@ -3,7 +3,7 @@
 //  SimpleImageViewer
 //
 //  Created by Jonathan Sahoo on 7/31/18.
-//  Copyright © 2018 aFrogleap. All rights reserved.
+//  Copyright © 2018 Jonathan Sahoo. All rights reserved.
 //
 
 import UIKit
@@ -12,11 +12,8 @@ public class PagingViewController: UIPageViewController {
 
     public var images = [UIImage]() {
         didSet {
-            images.forEach { image in
-                let configuration = ImageViewerConfiguration { config in
-                    config.image = image
-                }
-                pages.append(ImageViewerController(configuration: configuration))
+            images.forEach {
+                pages.append(ImageViewerController(image: $0))
             }
 
         }

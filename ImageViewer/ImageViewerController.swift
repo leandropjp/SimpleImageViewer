@@ -2,18 +2,19 @@ import UIKit
 import AVFoundation
 
 public final class ImageViewerController: UIViewController {
+
     @IBOutlet fileprivate var scrollView: UIScrollView!
     @IBOutlet fileprivate var imageView: UIImageView!
     @IBOutlet fileprivate var activityIndicator: UIActivityIndicatorView!
-    
-    fileprivate let configuration: ImageViewerConfiguration?
-    
+
     public override var prefersStatusBarHidden: Bool {
         return true
     }
+
+    private var image: UIImage?
     
-    public init(configuration: ImageViewerConfiguration?) {
-        self.configuration = configuration
+    public init(image: UIImage) {
+        self.image = image
         super.init(nibName: String(describing: type(of: self)), bundle: Bundle(for: type(of: self)))
         
         modalPresentationStyle = .overFullScreen
@@ -22,16 +23,15 @@ public final class ImageViewerController: UIViewController {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        imageView.image = configuration?.imageView?.image ?? configuration?.image
+        imageView.image = image
         
         setupScrollView()
         setupGestureRecognizers()
-        setupActivityIndicator()
 
         // Disable scrolling when fully zoomed out (which we are by default)
         scrollView.isScrollEnabled = false
@@ -58,12 +58,6 @@ extension ImageViewerController: UIScrollViewDelegate {
     }
 }
 
-extension ImageViewerController: UIGestureRecognizerDelegate {
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return scrollView.zoomScale == scrollView.minimumZoomScale
-    }
-}
-
 private extension ImageViewerController {
     func setupScrollView() {
         scrollView.decelerationRate = UIScrollViewDecelerationRateFast
@@ -76,18 +70,6 @@ private extension ImageViewerController {
         tapGestureRecognizer.numberOfTapsRequired = 2
         tapGestureRecognizer.addTarget(self, action: #selector(imageViewDoubleTapped))
         imageView.addGestureRecognizer(tapGestureRecognizer)
-    }
-    
-    func setupActivityIndicator() {
-        guard let block = configuration?.imageBlock else { return }
-        activityIndicator.startAnimating()
-        block { [weak self] image in
-            guard let image = image else { return }
-            DispatchQueue.main.async {
-                self?.activityIndicator.stopAnimating()
-                self?.imageView.image = image
-            }
-        }
     }
     
     @IBAction func closeButtonPressed() {
