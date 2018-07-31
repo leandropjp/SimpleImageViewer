@@ -32,6 +32,15 @@ public final class ImageViewerController: UIViewController {
         setupScrollView()
         setupGestureRecognizers()
         setupActivityIndicator()
+
+        // Disable scrolling when fully zoomed out (which we are by default)
+        scrollView.isScrollEnabled = false
+    }
+
+    public override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        // Reset zoom when view disappears
+        scrollView.setZoomScale(scrollView.minimumZoomScale, animated: false)
     }
 }
 
@@ -98,8 +107,10 @@ private extension ImageViewerController {
 
         if scrollView.zoomScale > scrollView.minimumZoomScale {
             scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
+            scrollView.isScrollEnabled = false
         } else {
             scrollView.zoom(to: zoomRectForScale(scale: scrollView.maximumZoomScale, center: recognizer.location(in: recognizer.view)), animated: true)
+            scrollView.isScrollEnabled = true
         }
     }
 }
