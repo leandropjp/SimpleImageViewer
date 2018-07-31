@@ -21,7 +21,6 @@
 		A0BF70AE1EDC5B1400109F6E /* SimpleImageViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BF70A71EDC5B1400109F6E /* SimpleImageViewer.framework */; };
 		A0BF70AF1EDC5B1400109F6E /* SimpleImageViewer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A0BF70A71EDC5B1400109F6E /* SimpleImageViewer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A0BF70B71EDC758300109F6E /* ImageViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E76EB1ECC94EA00B77D46 /* ImageViewerController.swift */; };
-		A0BF70B81EDC758300109F6E /* AnimatableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E771F1ECE390C00B77D46 /* AnimatableImageView.swift */; };
 		A0BF70B91EDC759A00109F6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A07E76DA1ECC94A400B77D46 /* Main.storyboard */; };
 		A0BF70BA1EDC75AE00109F6E /* ImageViewerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A07E76ED1ECC959700B77D46 /* ImageViewerController.xib */; };
 		A0BF70BB1EDC75AE00109F6E /* ImageViewer-Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A07E77231ECF289800B77D46 /* ImageViewer-Assets.xcassets */; };
@@ -69,7 +68,6 @@
 		A07E76EB1ECC94EA00B77D46 /* ImageViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerController.swift; sourceTree = "<group>"; };
 		A07E76ED1ECC959700B77D46 /* ImageViewerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ImageViewerController.xib; path = Resources/ImageViewerController.xib; sourceTree = "<group>"; };
 		A07E77161ECE0F3500B77D46 /* ImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
-		A07E771F1ECE390C00B77D46 /* AnimatableImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatableImageView.swift; sourceTree = "<group>"; };
 		A07E77211ECF1FC100B77D46 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A07E77231ECF289800B77D46 /* ImageViewer-Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "ImageViewer-Assets.xcassets"; sourceTree = "<group>"; };
 		A0BF70A71EDC5B1400109F6E /* SimpleImageViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SimpleImageViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -178,7 +176,6 @@
 			children = (
 				A0BF70A91EDC5B1400109F6E /* ImageViewer.h */,
 				A02EE5CB1EF16EBE000EAB41 /* Info.plist */,
-				A07E771F1ECE390C00B77D46 /* AnimatableImageView.swift */,
 				A02EE5CD1EF172C3000EAB41 /* Utilities.swift */,
 				A08B781E1EF16CCF00F8C5BC /* ImageViewerController */,
 				A03518711EDD6C7D00AAE484 /* Resources */,
@@ -360,7 +357,6 @@
 				A02EE5CF1EF172C8000EAB41 /* Utilities.swift in Sources */,
 				A0BF70B71EDC758300109F6E /* ImageViewerController.swift in Sources */,
 				A05E9FA51EF7FB640024CF47 /* ImageViewerConfiguration.swift in Sources */,
-				A0BF70B81EDC758300109F6E /* AnimatableImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
