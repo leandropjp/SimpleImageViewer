@@ -47,7 +47,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
 //
 //        present(ImageViewerController(configuration: configuration), animated: true)
 
-        let vc = PagingViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [:])
+        let vc = PagingViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : 20])
         vc.images = images.compactMap({$0})
         present(vc, animated: true)
     }
