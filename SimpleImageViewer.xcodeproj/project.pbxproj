@@ -17,13 +17,9 @@
 		A07E76D91ECC94A400B77D46 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E76D81ECC94A400B77D46 /* ViewController.swift */; };
 		A07E76DE1ECC94A400B77D46 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A07E76DD1ECC94A400B77D46 /* Assets.xcassets */; };
 		A07E77171ECE0F3500B77D46 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E77161ECE0F3500B77D46 /* ImageCell.swift */; };
-		A08B781D1EF1684600F8C5BC /* ImageViewerDismissalInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B781B1EF1674200F8C5BC /* ImageViewerDismissalInteractor.swift */; };
 		A0BF70AB1EDC5B1400109F6E /* ImageViewer.h in Headers */ = {isa = PBXBuildFile; fileRef = A0BF70A91EDC5B1400109F6E /* ImageViewer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A0BF70AE1EDC5B1400109F6E /* SimpleImageViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BF70A71EDC5B1400109F6E /* SimpleImageViewer.framework */; };
 		A0BF70AF1EDC5B1400109F6E /* SimpleImageViewer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A0BF70A71EDC5B1400109F6E /* SimpleImageViewer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A0BF70B41EDC758300109F6E /* ImageViewerTransitioningHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E771B1ECE313E00B77D46 /* ImageViewerTransitioningHandler.swift */; };
-		A0BF70B51EDC758300109F6E /* ImageViewerPresentationTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E77191ECE2EDF00B77D46 /* ImageViewerPresentationTransition.swift */; };
-		A0BF70B61EDC758300109F6E /* ImageViewerDismissalTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E77251ECF3E6700B77D46 /* ImageViewerDismissalTransition.swift */; };
 		A0BF70B71EDC758300109F6E /* ImageViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E76EB1ECC94EA00B77D46 /* ImageViewerController.swift */; };
 		A0BF70B81EDC758300109F6E /* AnimatableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E771F1ECE390C00B77D46 /* AnimatableImageView.swift */; };
 		A0BF70B91EDC759A00109F6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A07E76DA1ECC94A400B77D46 /* Main.storyboard */; };
@@ -73,13 +69,9 @@
 		A07E76EB1ECC94EA00B77D46 /* ImageViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerController.swift; sourceTree = "<group>"; };
 		A07E76ED1ECC959700B77D46 /* ImageViewerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ImageViewerController.xib; path = Resources/ImageViewerController.xib; sourceTree = "<group>"; };
 		A07E77161ECE0F3500B77D46 /* ImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
-		A07E77191ECE2EDF00B77D46 /* ImageViewerPresentationTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerPresentationTransition.swift; sourceTree = "<group>"; };
-		A07E771B1ECE313E00B77D46 /* ImageViewerTransitioningHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerTransitioningHandler.swift; sourceTree = "<group>"; };
 		A07E771F1ECE390C00B77D46 /* AnimatableImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatableImageView.swift; sourceTree = "<group>"; };
 		A07E77211ECF1FC100B77D46 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A07E77231ECF289800B77D46 /* ImageViewer-Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "ImageViewer-Assets.xcassets"; sourceTree = "<group>"; };
-		A07E77251ECF3E6700B77D46 /* ImageViewerDismissalTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerDismissalTransition.swift; sourceTree = "<group>"; };
-		A08B781B1EF1674200F8C5BC /* ImageViewerDismissalInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerDismissalInteractor.swift; sourceTree = "<group>"; };
 		A0BF70A71EDC5B1400109F6E /* SimpleImageViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SimpleImageViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0BF70A91EDC5B1400109F6E /* ImageViewer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageViewer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -171,17 +163,6 @@
 			path = Example;
 			sourceTree = "<group>";
 		};
-		A07E77181ECE2EC800B77D46 /* Transitions */ = {
-			isa = PBXGroup;
-			children = (
-				A07E771B1ECE313E00B77D46 /* ImageViewerTransitioningHandler.swift */,
-				A07E77191ECE2EDF00B77D46 /* ImageViewerPresentationTransition.swift */,
-				A07E77251ECF3E6700B77D46 /* ImageViewerDismissalTransition.swift */,
-				A08B781B1EF1674200F8C5BC /* ImageViewerDismissalInteractor.swift */,
-			);
-			path = Transitions;
-			sourceTree = "<group>";
-		};
 		A08B781E1EF16CCF00F8C5BC /* ImageViewerController */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,7 +181,6 @@
 				A07E771F1ECE390C00B77D46 /* AnimatableImageView.swift */,
 				A02EE5CD1EF172C3000EAB41 /* Utilities.swift */,
 				A08B781E1EF16CCF00F8C5BC /* ImageViewerController */,
-				A07E77181ECE2EC800B77D46 /* Transitions */,
 				A03518711EDD6C7D00AAE484 /* Resources */,
 			);
 			name = SimpleImageViewer;
@@ -377,12 +357,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0BF70B41EDC758300109F6E /* ImageViewerTransitioningHandler.swift in Sources */,
-				A0BF70B51EDC758300109F6E /* ImageViewerPresentationTransition.swift in Sources */,
 				A02EE5CF1EF172C8000EAB41 /* Utilities.swift in Sources */,
-				A0BF70B61EDC758300109F6E /* ImageViewerDismissalTransition.swift in Sources */,
 				A0BF70B71EDC758300109F6E /* ImageViewerController.swift in Sources */,
-				A08B781D1EF1684600F8C5BC /* ImageViewerDismissalInteractor.swift in Sources */,
 				A05E9FA51EF7FB640024CF47 /* ImageViewerConfiguration.swift in Sources */,
 				A0BF70B81EDC758300109F6E /* AnimatableImageView.swift in Sources */,
 			);
