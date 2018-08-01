@@ -14,6 +14,9 @@ public final class ImageViewerController: UIViewController {
 
     private var swipingToDismiss = false
     private var swipeToDismissTransition: GallerySwipeToDismissTransition?
+
+    var controllerIsSwipingToDismiss: ((_ distanceToEdge: CGFloat) -> Void)?
+    var controllerDidDismissViaSwipe: (() -> Void)?
     
     public init(image: UIImage) {
         self.image = image
@@ -40,6 +43,10 @@ public final class ImageViewerController: UIViewController {
         // Reset zoom when view disappears
         scrollView.setZoomScale(scrollView.minimumZoomScale, animated: false)
     }
+
+    deinit {
+        self.scrollView?.removeObserver(self, forKeyPath: "contentOffset")
+    }
 }
 
 extension ImageViewerController: UIScrollViewDelegate {
@@ -61,6 +68,7 @@ private extension ImageViewerController {
         scrollView.decelerationRate = UIScrollViewDecelerationRateFast
         scrollView.alwaysBounceVertical = true
         scrollView.alwaysBounceHorizontal = true
+        scrollView.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.new, context: nil)
     }
     
     func setupGestureRecognizers() {
@@ -102,6 +110,13 @@ private extension ImageViewerController {
 
 extension ImageViewerController: UIGestureRecognizerDelegate {
 
+    // We only want the swipeToDismissRecognizer to handle vertical swipes. Horizontal swipes should be disregarded so that the UIPageViewController can handle it for paging
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard gestureRecognizer == swipeToDismissRecognizer else { return false }
+        let velocity = swipeToDismissRecognizer.velocity(in: swipeToDismissRecognizer.view)
+        return abs(velocity.y) > abs(velocity.x)
+    }
+
     @objc func scrollViewDidSwipeToDismiss(_ recognizer: UIPanGestureRecognizer) {
 
         /// A deliberate UX decision...you have to zoom back in to scale 1 to be able to swipe to dismiss. It is difficult for the user to swipe to dismiss from images larger then screen bounds because almost all the time it's not swiping to dismiss but instead panning a zoomed in picture on the canvas.
@@ -133,29 +148,27 @@ extension ImageViewerController: UIGestureRecognizerDelegate {
     func handleSwipeToDismissEnded(finalVelocity velocity: CGPoint, finalTouchPoint touchPoint: CGPoint) {
 
         let swipeToDismissCompletionBlock = { [weak self] in
-
             UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
             self?.swipingToDismiss = false
-//            self?.delegate?.itemControllerDidFinishSwipeToDismissSuccessfully()
-            self?.dismiss(animated: true, completion: nil)
+            self?.controllerDidDismissViaSwipe?()
         }
 
         switch velocity {
 
-        /// VERTICAL UP direction
+        // Swiping Up
         case _ where velocity.y < -thresholdVelocity:
             swipeToDismissTransition?.finishInteractiveTransition(touchPoint: touchPoint.y,
                                                                   targetOffset: (view.bounds.height / 2) + (imageView.bounds.height / 2),
                                                                   escapeVelocity: velocity.y,
                                                                   completion: swipeToDismissCompletionBlock)
-        /// VERTICAL DOWN direction
+        // Swiping Down
         case _ where thresholdVelocity < velocity.y:
             swipeToDismissTransition?.finishInteractiveTransition(touchPoint: touchPoint.y,
                                                                   targetOffset: -(view.bounds.height / 2) - (imageView.bounds.height / 2),
                                                                   escapeVelocity: velocity.y,
                                                                   completion: swipeToDismissCompletionBlock)
 
-        ///If none of the above select cases, we cancel.
+        // If none of the above select cases, we cancel.
         default:
             swipeToDismissTransition?.cancelTransition() { [weak self] in
                 self?.swipingToDismiss = false
@@ -163,11 +176,16 @@ extension ImageViewerController: UIGestureRecognizerDelegate {
         }
     }
 
-    // We only want the swipeToDismissRecognizer to handle vertical swipes. Horizontal swipes should be disregarded so that the UIPageViewController can handle it for paging
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        guard gestureRecognizer == swipeToDismissRecognizer else { return false }
-        let velocity = swipeToDismissRecognizer.velocity(in: swipeToDismissRecognizer.view)
-        return abs(velocity.y) > abs(velocity.x)
+    // Reports the continuous progress of Swipe To Dismiss to the Paging View Controller
+    override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+
+        guard swipingToDismiss else { return }
+        guard keyPath == "contentOffset" else { return }
+
+        let distanceToEdge: CGFloat = (scrollView.bounds.height / 2) + (imageView.bounds.height / 2)
+        let percentDistance: CGFloat = fabs(scrollView.contentOffset.y / distanceToEdge)
+
+        controllerIsSwipingToDismiss?(percentDistance)
     }
 }
 

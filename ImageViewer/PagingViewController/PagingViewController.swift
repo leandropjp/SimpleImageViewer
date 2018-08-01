@@ -15,7 +15,18 @@ public class PagingViewController: UIPageViewController {
     }
 
     public var images = [UIImage]() {
-        didSet { images.forEach { pages.append(ImageViewerController(image: $0)) } }
+        didSet {
+            images.forEach {
+                let controller = ImageViewerController(image: $0)
+                controller.controllerIsSwipingToDismiss = { [weak self] distanceToEdge in
+                    self?.view.alpha = 1 - distanceToEdge
+                }
+                controller.controllerDidDismissViaSwipe = { [weak self] in
+                    self?.dismiss(animated: false, completion: nil)
+                }
+                pages.append(controller)
+            }
+        }
     }
 
     private var pages = [UIViewController]()
