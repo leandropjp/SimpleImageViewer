@@ -7,7 +7,13 @@ public final class ImageViewerController: UIViewController {
     @IBOutlet fileprivate var imageView: UIImageView!
     @IBOutlet fileprivate var activityIndicator: UIActivityIndicatorView!
 
+    private let thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
+    private let swipeToDismissRecognizer = UIPanGestureRecognizer()
+
     private var image: UIImage?
+
+    private var swipingToDismiss: SwipeToDismiss?
+    private var swipeToDismissTransition: GallerySwipeToDismissTransition?
     
     public init(image: UIImage) {
         self.image = image
@@ -62,6 +68,11 @@ private extension ImageViewerController {
         tapGestureRecognizer.numberOfTapsRequired = 2
         tapGestureRecognizer.addTarget(self, action: #selector(imageViewDoubleTapped))
         imageView.addGestureRecognizer(tapGestureRecognizer)
+
+        swipeToDismissRecognizer.addTarget(self, action: #selector(scrollViewDidSwipeToDismiss))
+        swipeToDismissRecognizer.delegate = self
+        view.addGestureRecognizer(swipeToDismissRecognizer)
+        swipeToDismissRecognizer.require(toFail: tapGestureRecognizer)
     }
     
     @IBAction func closeButtonPressed() {
@@ -86,6 +97,99 @@ private extension ImageViewerController {
             scrollView.zoom(to: zoomRectForScale(scale: scrollView.maximumZoomScale, center: recognizer.location(in: recognizer.view)), animated: true)
             scrollView.isScrollEnabled = true
         }
+    }
+}
+
+extension ImageViewerController: UIGestureRecognizerDelegate {
+
+    @objc func scrollViewDidSwipeToDismiss(_ recognizer: UIPanGestureRecognizer) {
+
+        /// A deliberate UX decision...you have to zoom back in to scale 1 to be able to swipe to dismiss. It is difficult for the user to swipe to dismiss from images larger then screen bounds because almost all the time it's not swiping to dismiss but instead panning a zoomed in picture on the canvas.
+        guard scrollView.zoomScale == scrollView.minimumZoomScale else { return }
+
+        let currentVelocity = recognizer.velocity(in: self.view)
+        let currentTouchPoint = recognizer.translation(in: view)
+
+        if swipingToDismiss == nil { swipingToDismiss = (fabs(currentVelocity.x) > fabs(currentVelocity.y)) ? .horizontal : .vertical }
+        guard let swipingToDismissInProgress = swipingToDismiss else { return }
+
+        switch recognizer.state {
+
+        case .began:
+            swipeToDismissTransition = GallerySwipeToDismissTransition(scrollView: self.scrollView)
+
+        case .changed:
+            self.handleSwipeToDismissInProgress(swipingToDismissInProgress, forTouchPoint: currentTouchPoint)
+
+        case .ended:
+            self.handleSwipeToDismissEnded(swipingToDismissInProgress, finalVelocity: currentVelocity, finalTouchPoint: currentTouchPoint)
+
+        default:
+            break
+        }
+    }
+
+    // MARK: - Swipe To Dismiss
+
+    func handleSwipeToDismissInProgress(_ swipeOrientation: SwipeToDismiss, forTouchPoint touchPoint: CGPoint) {
+
+        switch (swipeOrientation, index) {
+        case (.horizontal, _):
+            return
+
+        case (.vertical, _):
+            swipeToDismissTransition?.updateInteractiveTransition(verticalOffset: -touchPoint.y) // all the rest
+        }
+    }
+
+    func handleSwipeToDismissEnded(_ swipeOrientation: SwipeToDismiss, finalVelocity velocity: CGPoint, finalTouchPoint touchPoint: CGPoint) {
+
+        let swipeToDismissCompletionBlock = { [weak self] in
+
+            UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
+            self?.swipingToDismiss = nil
+//            self?.delegate?.itemControllerDidFinishSwipeToDismissSuccessfully()
+            self?.dismiss(animated: true, completion: nil)
+        }
+
+        switch (swipeOrientation, index) {
+
+        /// Any item VERTICAL UP direction
+        case (.vertical, _) where velocity.y < -thresholdVelocity:
+
+            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation,
+                                                                  touchPoint: touchPoint.y,
+                                                                  targetOffset: (view.bounds.height / 2) + (imageView.bounds.height / 2),
+                                                                  escapeVelocity: velocity.y,
+                                                                  completion: swipeToDismissCompletionBlock)
+        /// Any item VERTICAL DOWN direction
+        case (.vertical, _) where thresholdVelocity < velocity.y:
+
+            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation,
+                                                                  touchPoint: touchPoint.y,
+                                                                  targetOffset: -(view.bounds.height / 2) - (imageView.bounds.height / 2),
+                                                                  escapeVelocity: velocity.y,
+                                                                  completion: swipeToDismissCompletionBlock)
+
+        ///If none of the above select cases, we cancel.
+        default:
+            swipeToDismissTransition?.cancelTransition() { [weak self] in
+                self?.swipingToDismiss = nil
+            }
+        }
+    }
+
+    // We only want the swipeToDismissRecognizer to handle vertical swipes. Horizontal swipes should be disregarded so that the UIPageViewController can handle it for paging
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard gestureRecognizer == swipeToDismissRecognizer else { return false }
+        let velocity = swipeToDismissRecognizer.velocity(in: swipeToDismissRecognizer.view)
+        return abs(velocity.y) > abs(velocity.x)
+    }
+}
+
+extension UIApplication {
+    static var applicationWindow: UIWindow {
+        return (UIApplication.shared.delegate?.window?.flatMap { $0 })!
     }
 }
 

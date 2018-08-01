@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		897C7D7A21124B8900FF71C0 /* SwipeToDismissTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897C7D7921124B8900FF71C0 /* SwipeToDismissTransitions.swift */; };
 		89F2422F211108EB00D033BC /* PagingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F2422D211108EB00D033BC /* PagingViewController.swift */; };
 		A02EE5B91EF16E54000EAB41 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A02EE5B81EF16E54000EAB41 /* Info.plist */; };
 		A02EE5CF1EF172C8000EAB41 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02EE5CD1EF172C3000EAB41 /* Utilities.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		897C7D7921124B8900FF71C0 /* SwipeToDismissTransitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToDismissTransitions.swift; sourceTree = "<group>"; };
 		89F2422D211108EB00D033BC /* PagingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingViewController.swift; sourceTree = "<group>"; };
 		A02EE5B81EF16E54000EAB41 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A02EE5CB1EF16EBE000EAB41 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				A0BF70A91EDC5B1400109F6E /* ImageViewer.h */,
 				A02EE5CB1EF16EBE000EAB41 /* Info.plist */,
 				A02EE5CD1EF172C3000EAB41 /* Utilities.swift */,
+				897C7D7921124B8900FF71C0 /* SwipeToDismissTransitions.swift */,
 				A08B781E1EF16CCF00F8C5BC /* ImageViewerController */,
 				89F2422C2111079E00D033BC /* PagingViewController */,
 				A03518711EDD6C7D00AAE484 /* Resources */,
@@ -352,6 +355,7 @@
 			files = (
 				A02EE5CF1EF172C8000EAB41 /* Utilities.swift in Sources */,
 				A0BF70B71EDC758300109F6E /* ImageViewerController.swift in Sources */,
+				897C7D7A21124B8900FF71C0 /* SwipeToDismissTransitions.swift in Sources */,
 				89F2422F211108EB00D033BC /* PagingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
