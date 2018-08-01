@@ -24,7 +24,6 @@
 		A0BF70B91EDC759A00109F6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A07E76DA1ECC94A400B77D46 /* Main.storyboard */; };
 		A0BF70BA1EDC75AE00109F6E /* ImageViewerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A07E76ED1ECC959700B77D46 /* ImageViewerController.xib */; };
 		A0BF70BB1EDC75AE00109F6E /* ImageViewer-Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A07E77231ECF289800B77D46 /* ImageViewer-Assets.xcassets */; };
-		A0BF70BC1EDC767B00109F6E /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E77211ECF1FC100B77D46 /* HeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,7 +67,6 @@
 		A07E76EB1ECC94EA00B77D46 /* ImageViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerController.swift; sourceTree = "<group>"; };
 		A07E76ED1ECC959700B77D46 /* ImageViewerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ImageViewerController.xib; path = Resources/ImageViewerController.xib; sourceTree = "<group>"; };
 		A07E77161ECE0F3500B77D46 /* ImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
-		A07E77211ECF1FC100B77D46 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A07E77231ECF289800B77D46 /* ImageViewer-Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "ImageViewer-Assets.xcassets"; sourceTree = "<group>"; };
 		A0BF70A71EDC5B1400109F6E /* SimpleImageViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SimpleImageViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0BF70A91EDC5B1400109F6E /* ImageViewer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageViewer.h; sourceTree = "<group>"; };
@@ -118,15 +116,6 @@
 			path = SimpleImageViewerTests;
 			sourceTree = "<group>";
 		};
-		A03518701EDD6C6700AAE484 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				A07E76DD1ECC94A400B77D46 /* Assets.xcassets */,
-				A07E76DA1ECC94A400B77D46 /* Main.storyboard */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		A03518711EDD6C7D00AAE484 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -159,12 +148,12 @@
 		A07E76D51ECC94A400B77D46 /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				A02EE5B81EF16E54000EAB41 /* Info.plist */,
-				A03518701EDD6C6700AAE484 /* Resources */,
 				A07E76D61ECC94A400B77D46 /* AppDelegate.swift */,
-				A07E77211ECF1FC100B77D46 /* HeaderView.swift */,
 				A07E77161ECE0F3500B77D46 /* ImageCell.swift */,
 				A07E76D81ECC94A400B77D46 /* ViewController.swift */,
+				A07E76DA1ECC94A400B77D46 /* Main.storyboard */,
+				A02EE5B81EF16E54000EAB41 /* Info.plist */,
+				A07E76DD1ECC94A400B77D46 /* Assets.xcassets */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -354,7 +343,6 @@
 				A07E76D91ECC94A400B77D46 /* ViewController.swift in Sources */,
 				A07E77171ECE0F3500B77D46 /* ImageCell.swift in Sources */,
 				A07E76D71ECC94A400B77D46 /* AppDelegate.swift in Sources */,
-				A0BF70BC1EDC767B00109F6E /* HeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
