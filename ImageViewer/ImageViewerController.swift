@@ -12,7 +12,7 @@ public final class ImageViewerController: UIViewController {
 
     private var image: UIImage?
 
-    private var swipingToDismiss: SwipeToDismiss?
+    private var swipingToDismiss = false
     private var swipeToDismissTransition: GallerySwipeToDismissTransition?
     
     public init(image: UIImage) {
@@ -110,8 +110,7 @@ extension ImageViewerController: UIGestureRecognizerDelegate {
         let currentVelocity = recognizer.velocity(in: self.view)
         let currentTouchPoint = recognizer.translation(in: view)
 
-        if swipingToDismiss == nil { swipingToDismiss = (fabs(currentVelocity.x) > fabs(currentVelocity.y)) ? .horizontal : .vertical }
-        guard let swipingToDismissInProgress = swipingToDismiss else { return }
+        swipingToDismiss = true
 
         switch recognizer.state {
 
@@ -119,10 +118,10 @@ extension ImageViewerController: UIGestureRecognizerDelegate {
             swipeToDismissTransition = GallerySwipeToDismissTransition(scrollView: self.scrollView)
 
         case .changed:
-            self.handleSwipeToDismissInProgress(swipingToDismissInProgress, forTouchPoint: currentTouchPoint)
+            swipeToDismissTransition?.updateInteractiveTransition(verticalOffset: -currentTouchPoint.y)
 
         case .ended:
-            self.handleSwipeToDismissEnded(swipingToDismissInProgress, finalVelocity: currentVelocity, finalTouchPoint: currentTouchPoint)
+            self.handleSwipeToDismissEnded(finalVelocity: currentVelocity, finalTouchPoint: currentTouchPoint)
 
         default:
             break
@@ -131,42 +130,27 @@ extension ImageViewerController: UIGestureRecognizerDelegate {
 
     // MARK: - Swipe To Dismiss
 
-    func handleSwipeToDismissInProgress(_ swipeOrientation: SwipeToDismiss, forTouchPoint touchPoint: CGPoint) {
-
-        switch (swipeOrientation, index) {
-        case (.horizontal, _):
-            return
-
-        case (.vertical, _):
-            swipeToDismissTransition?.updateInteractiveTransition(verticalOffset: -touchPoint.y) // all the rest
-        }
-    }
-
-    func handleSwipeToDismissEnded(_ swipeOrientation: SwipeToDismiss, finalVelocity velocity: CGPoint, finalTouchPoint touchPoint: CGPoint) {
+    func handleSwipeToDismissEnded(finalVelocity velocity: CGPoint, finalTouchPoint touchPoint: CGPoint) {
 
         let swipeToDismissCompletionBlock = { [weak self] in
 
             UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
-            self?.swipingToDismiss = nil
+            self?.swipingToDismiss = false
 //            self?.delegate?.itemControllerDidFinishSwipeToDismissSuccessfully()
             self?.dismiss(animated: true, completion: nil)
         }
 
-        switch (swipeOrientation, index) {
+        switch velocity {
 
-        /// Any item VERTICAL UP direction
-        case (.vertical, _) where velocity.y < -thresholdVelocity:
-
-            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation,
-                                                                  touchPoint: touchPoint.y,
+        /// VERTICAL UP direction
+        case _ where velocity.y < -thresholdVelocity:
+            swipeToDismissTransition?.finishInteractiveTransition(touchPoint: touchPoint.y,
                                                                   targetOffset: (view.bounds.height / 2) + (imageView.bounds.height / 2),
                                                                   escapeVelocity: velocity.y,
                                                                   completion: swipeToDismissCompletionBlock)
-        /// Any item VERTICAL DOWN direction
-        case (.vertical, _) where thresholdVelocity < velocity.y:
-
-            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation,
-                                                                  touchPoint: touchPoint.y,
+        /// VERTICAL DOWN direction
+        case _ where thresholdVelocity < velocity.y:
+            swipeToDismissTransition?.finishInteractiveTransition(touchPoint: touchPoint.y,
                                                                   targetOffset: -(view.bounds.height / 2) - (imageView.bounds.height / 2),
                                                                   escapeVelocity: velocity.y,
                                                                   completion: swipeToDismissCompletionBlock)
@@ -174,7 +158,7 @@ extension ImageViewerController: UIGestureRecognizerDelegate {
         ///If none of the above select cases, we cancel.
         default:
             swipeToDismissTransition?.cancelTransition() { [weak self] in
-                self?.swipingToDismiss = nil
+                self?.swipingToDismiss = false
             }
         }
     }
