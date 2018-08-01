@@ -41,6 +41,7 @@ public class PagingViewController: UIPageViewController {
         } else if let firstVC = pages.first {
             setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
         }
+        view.backgroundColor = .black // Have to set the background to black when modalPresentationStyle = .overFullScreen to prevent seeing the presenting view controller when swiping between pages
     }
 }
 
