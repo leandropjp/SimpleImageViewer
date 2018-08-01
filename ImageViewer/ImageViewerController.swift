@@ -7,19 +7,11 @@ public final class ImageViewerController: UIViewController {
     @IBOutlet fileprivate var imageView: UIImageView!
     @IBOutlet fileprivate var activityIndicator: UIActivityIndicatorView!
 
-    public override var prefersStatusBarHidden: Bool {
-        return true
-    }
-
     private var image: UIImage?
     
     public init(image: UIImage) {
         self.image = image
         super.init(nibName: String(describing: type(of: self)), bundle: Bundle(for: type(of: self)))
-        
-        modalPresentationStyle = .overFullScreen
-        modalTransitionStyle = .crossDissolve
-        modalPresentationCapturesStatusBarAppearance = true
     }
     
     required public init?(coder aDecoder: NSCoder) {

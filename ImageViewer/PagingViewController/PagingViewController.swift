@@ -10,6 +10,10 @@ import UIKit
 
 public class PagingViewController: UIPageViewController {
 
+    public override var prefersStatusBarHidden: Bool {
+        return true
+    }
+
     public var images = [UIImage]() {
         didSet { images.forEach { pages.append(ImageViewerController(image: $0)) } }
     }
@@ -17,6 +21,17 @@ public class PagingViewController: UIPageViewController {
     private var pages = [UIViewController]()
 
     public var initialIndex: Int?
+
+    public override init(transitionStyle style: UIPageViewControllerTransitionStyle, navigationOrientation: UIPageViewControllerNavigationOrientation, options: [String : Any]? = nil) {
+        super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
+        modalPresentationStyle = .overFullScreen
+        modalTransitionStyle = .crossDissolve
+        modalPresentationCapturesStatusBarAppearance = true
+    }
+
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
 
     override public func viewDidLoad() {
         super.viewDidLoad()
