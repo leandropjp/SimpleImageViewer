@@ -22,10 +22,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = PagingViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : 20])
-        vc.images = images.compactMap({$0})
-        vc.initialIndex = indexPath.row
-        present(vc, animated: true)
+        present(PagingViewController(images: images.compactMap({$0}), initialIndex: indexPath.row), animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

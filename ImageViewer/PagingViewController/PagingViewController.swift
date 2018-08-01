@@ -14,44 +14,40 @@ public class PagingViewController: UIPageViewController {
         return true
     }
 
-    public var images = [UIImage]() {
-        didSet {
-            images.forEach {
-                let controller = ImageViewerController(image: $0)
-                controller.controllerIsSwipingToDismiss = { [weak self] distanceToEdge in
-                    self?.view.alpha = 1 - distanceToEdge
-                }
-                controller.controllerDidDismissViaSwipe = { [weak self] in
-                    self?.dismiss(animated: false, completion: nil)
-                }
-                pages.append(controller)
-            }
-        }
-    }
-
     private var pages = [UIViewController]()
+    private var initialIndex: Int?
 
-    public var initialIndex: Int?
+    public convenience init(images: [UIImage], initialIndex: Int? = nil) {
+        self.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : 20])
 
-    public override init(transitionStyle style: UIPageViewControllerTransitionStyle, navigationOrientation: UIPageViewControllerNavigationOrientation, options: [String : Any]? = nil) {
-        super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
+        self.initialIndex = initialIndex
+
+        images.forEach {
+            let controller = ImageViewerController(image: $0)
+            controller.controllerIsSwipingToDismiss = { [weak self] distanceToEdge in
+                self?.view.alpha = 1 - distanceToEdge
+            }
+            controller.controllerDidDismissViaSwipe = { [weak self] in
+                self?.dismiss(animated: false, completion: nil)
+            }
+            pages.append(controller)
+        }
+
         modalPresentationStyle = .overFullScreen
         modalTransitionStyle = .crossDissolve
         modalPresentationCapturesStatusBarAppearance = true
     }
 
-    public required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.dataSource = self
-        if let initialIndex = initialIndex, initialIndex < images.count {
+
+        if let initialIndex = initialIndex, initialIndex < pages.count {
             setViewControllers([pages[initialIndex]], direction: .forward, animated: true, completion: nil)
         } else if let firstVC = pages.first {
             setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
         }
+
         view.backgroundColor = .black // Have to set the background to black when modalPresentationStyle = .overFullScreen to prevent seeing the presenting view controller when swiping between pages
     }
 }
