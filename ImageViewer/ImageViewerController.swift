@@ -30,6 +30,11 @@ public final class ImageViewerController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         imageView.image = image
+
+        imageView.sd_setImage(with: URL(string: "https://picsum.photos/200/300")!) { (_, error, _, url) in
+            print("URL: \(url)")
+            print("Error: \(error)")
+        }
         
         setupScrollView()
         setupGestureRecognizers()
