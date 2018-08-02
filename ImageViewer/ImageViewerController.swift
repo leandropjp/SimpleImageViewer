@@ -1,4 +1,5 @@
 import UIKit
+import SDWebImage
 
 public final class ImageViewerController: UIViewController {
 

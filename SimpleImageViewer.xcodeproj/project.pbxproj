@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		897C7D7A21124B8900FF71C0 /* SwipeToDismissTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897C7D7921124B8900FF71C0 /* SwipeToDismissTransitions.swift */; };
+		897C7D832113A75100FF71C0 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 897C7D822113A75100FF71C0 /* SDWebImage.framework */; };
 		89F2422F211108EB00D033BC /* PagingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F2422D211108EB00D033BC /* PagingViewController.swift */; };
 		A02EE5B91EF16E54000EAB41 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A02EE5B81EF16E54000EAB41 /* Info.plist */; };
 		A02EE5CF1EF172C8000EAB41 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02EE5CD1EF172C3000EAB41 /* Utilities.swift */; };
@@ -53,6 +54,7 @@
 
 /* Begin PBXFileReference section */
 		897C7D7921124B8900FF71C0 /* SwipeToDismissTransitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToDismissTransitions.swift; sourceTree = "<group>"; };
+		897C7D822113A75100FF71C0 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
 		89F2422D211108EB00D033BC /* PagingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingViewController.swift; sourceTree = "<group>"; };
 		A02EE5B81EF16E54000EAB41 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A02EE5CB1EF16EBE000EAB41 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -95,12 +97,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				897C7D832113A75100FF71C0 /* SDWebImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		897C7D812113A75000FF71C0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				897C7D822113A75100FF71C0 /* SDWebImage.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		89F2422C2111079E00D033BC /* PagingViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +145,7 @@
 				A0BF70A81EDC5B1400109F6E /* SimpleImageViewer */,
 				A02EE5D51EF1897D000EAB41 /* SimpleImageViewerTests */,
 				A07E76D41ECC94A400B77D46 /* Products */,
+				897C7D812113A75000FF71C0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -559,6 +571,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/ImageViewer/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -584,6 +600,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/ImageViewer/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
