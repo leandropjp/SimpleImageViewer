@@ -260,11 +260,10 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0900;
-				ORGANIZATIONNAME = aFrogleap;
+				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					A02EE5D31EF1897D000EAB41 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = WQEYNHG5C2;
 						ProvisioningStyle = Automatic;
 					};
 					A07E76D21ECC94A400B77D46 = {
@@ -386,7 +385,7 @@
 		A02EE5DD1EF1897D000EAB41 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = WQEYNHG5C2;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SimpleImageViewerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.afrogleap.SimpleImageViewerTests;
@@ -398,7 +397,7 @@
 		A02EE5DE1EF1897D000EAB41 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = WQEYNHG5C2;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SimpleImageViewerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.afrogleap.SimpleImageViewerTests;
@@ -524,7 +523,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/ImageViewer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.afrogleapbv.inhouse.swift.imageviewer;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jonathansahoo.ImageViewer-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "d5b8f7cb-0120-427a-9ff1-14d28ee0046f";
 				PROVISIONING_PROFILE_SPECIFIER = "aFrogleap Wildcard Development";
@@ -542,7 +541,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/ImageViewer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.afrogleapbv.inhouse.swift.imageviewer;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jonathansahoo.ImageViewer-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
