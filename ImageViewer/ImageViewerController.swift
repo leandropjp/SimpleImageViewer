@@ -1,5 +1,4 @@
 import UIKit
-import AVFoundation
 
 public final class ImageViewerController: UIViewController {
 
@@ -12,7 +11,6 @@ public final class ImageViewerController: UIViewController {
     private let swipeToDismissRecognizer = UIPanGestureRecognizer()
 
     private var image: UIImage?
-
     private var swipingToDismiss = false
     private var swipeToDismissTransition: GallerySwipeToDismissTransition?
 
@@ -52,20 +50,6 @@ public final class ImageViewerController: UIViewController {
 
     deinit {
         self.scrollView?.removeObserver(self, forKeyPath: "contentOffset")
-    }
-}
-
-extension ImageViewerController: UIScrollViewDelegate {
-    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return imageView
-    }
-    
-    public func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        guard let image = imageView.image else { return }
-        let imageViewSize = Utilities.aspectFitRect(forSize: image.size, insideRect: imageView.frame)
-        let verticalInsets = -(scrollView.contentSize.height - max(imageViewSize.height, scrollView.bounds.height)) / 2
-        let horizontalInsets = -(scrollView.contentSize.width - max(imageViewSize.width, scrollView.bounds.width)) / 2
-        scrollView.contentInset = UIEdgeInsets(top: verticalInsets, left: horizontalInsets, bottom: verticalInsets, right: horizontalInsets)
     }
 }
 
@@ -128,6 +112,22 @@ private extension ImageViewerController {
     }
 }
 
+extension ImageViewerController: UIScrollViewDelegate {
+    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView
+    }
+
+    public func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        guard let image = imageView.image else { return }
+        let imageViewSize = Utilities.aspectFitRect(forSize: image.size, insideRect: imageView.frame)
+        let verticalInsets = -(scrollView.contentSize.height - max(imageViewSize.height, scrollView.bounds.height)) / 2
+        let horizontalInsets = -(scrollView.contentSize.width - max(imageViewSize.width, scrollView.bounds.width)) / 2
+        scrollView.contentInset = UIEdgeInsets(top: verticalInsets, left: horizontalInsets, bottom: verticalInsets, right: horizontalInsets)
+    }
+}
+
+// MARK: - Swipe To Dismiss
+
 extension ImageViewerController: UIGestureRecognizerDelegate {
 
     // We only want the swipeToDismissRecognizer to handle vertical swipes. Horizontal swipes should be disregarded so that the UIPageViewController can handle it for paging
@@ -138,7 +138,6 @@ extension ImageViewerController: UIGestureRecognizerDelegate {
     }
 
     @objc func handleSwipe(_ recognizer: UIPanGestureRecognizer) {
-
         /// A deliberate UX decision...you have to zoom back in to scale 1 to be able to swipe to dismiss. It is difficult for the user to swipe to dismiss from images larger then screen bounds because almost all the time it's not swiping to dismiss but instead panning a zoomed in picture on the canvas.
         guard scrollView.zoomScale == scrollView.minimumZoomScale else { return }
 
@@ -148,22 +147,16 @@ extension ImageViewerController: UIGestureRecognizerDelegate {
         swipingToDismiss = true
 
         switch recognizer.state {
-
         case .began:
             swipeToDismissTransition = GallerySwipeToDismissTransition(scrollView: self.scrollView)
-
         case .changed:
             swipeToDismissTransition?.updateInteractiveTransition(verticalOffset: -currentTouchPoint.y)
-
         case .ended:
             self.handleSwipeToDismissEnded(finalVelocity: currentVelocity, finalTouchPoint: currentTouchPoint)
-
         default:
             break
         }
     }
-
-    // MARK: - Swipe To Dismiss
 
     func handleSwipeToDismissEnded(finalVelocity velocity: CGPoint, finalTouchPoint touchPoint: CGPoint) {
 
@@ -174,7 +167,6 @@ extension ImageViewerController: UIGestureRecognizerDelegate {
         }
 
         switch velocity {
-
         // Swiping Up
         case _ where velocity.y < -thresholdVelocity:
             swipeToDismissTransition?.finishInteractiveTransition(touchPoint: touchPoint.y,
@@ -187,7 +179,6 @@ extension ImageViewerController: UIGestureRecognizerDelegate {
                                                                   targetOffset: -(view.bounds.height / 2) - (imageView.bounds.height / 2),
                                                                   escapeVelocity: velocity.y,
                                                                   completion: swipeToDismissCompletionBlock)
-
         // If none of the above select cases, we cancel.
         default:
             swipeToDismissTransition?.cancelTransition() { [weak self] in
@@ -198,13 +189,9 @@ extension ImageViewerController: UIGestureRecognizerDelegate {
 
     // Reports the continuous progress of Swipe To Dismiss to the Paging View Controller
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-
-        guard swipingToDismiss else { return }
-        guard keyPath == "contentOffset" else { return }
-
+        guard swipingToDismiss, keyPath == "contentOffset" else { return }
         let distanceToEdge: CGFloat = (scrollView.bounds.height / 2) + (imageView.bounds.height / 2)
         let percentDistance: CGFloat = fabs(scrollView.contentOffset.y / distanceToEdge)
-
         controllerIsSwipingToDismiss?(percentDistance)
     }
 }
