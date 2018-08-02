@@ -10,6 +10,8 @@ import UIKit
 
 public class PagingViewController: UIPageViewController {
 
+    static var overlayIsHidden = false
+
     public override var prefersStatusBarHidden: Bool {
         return true
     }

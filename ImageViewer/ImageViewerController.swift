@@ -5,6 +5,7 @@ public final class ImageViewerController: UIViewController {
 
     @IBOutlet fileprivate var scrollView: UIScrollView!
     @IBOutlet fileprivate var imageView: UIImageView!
+    @IBOutlet fileprivate var overlayView: UIView!
     @IBOutlet fileprivate var activityIndicator: UIActivityIndicatorView!
 
     private let thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
@@ -36,6 +37,11 @@ public final class ImageViewerController: UIViewController {
 
         // Disable scrolling when fully zoomed out (which we are by default)
         scrollView.isScrollEnabled = false
+    }
+
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        overlayView.alpha = PagingViewController.overlayIsHidden ? 0 : 1
     }
 
     public override func viewDidDisappear(_ animated: Bool) {
@@ -72,22 +78,36 @@ private extension ImageViewerController {
     }
     
     func setupGestureRecognizers() {
-        let tapGestureRecognizer = UITapGestureRecognizer()
-        tapGestureRecognizer.numberOfTapsRequired = 2
-        tapGestureRecognizer.addTarget(self, action: #selector(imageViewDoubleTapped))
-        imageView.addGestureRecognizer(tapGestureRecognizer)
+        let doubleTapGestureRecognizer = UITapGestureRecognizer()
+        doubleTapGestureRecognizer.numberOfTapsRequired = 2
+        doubleTapGestureRecognizer.addTarget(self, action: #selector(handleDoubleTap))
+        scrollView.addGestureRecognizer(doubleTapGestureRecognizer)
 
-        swipeToDismissRecognizer.addTarget(self, action: #selector(scrollViewDidSwipeToDismiss))
+        let singleTapGestureRecognizer = UITapGestureRecognizer()
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.addTarget(self, action: #selector(handleSingleTap))
+        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
+        singleTapGestureRecognizer.require(toFail: doubleTapGestureRecognizer)
+
+        swipeToDismissRecognizer.addTarget(self, action: #selector(handleSwipe))
         swipeToDismissRecognizer.delegate = self
         view.addGestureRecognizer(swipeToDismissRecognizer)
-        swipeToDismissRecognizer.require(toFail: tapGestureRecognizer)
+        swipeToDismissRecognizer.require(toFail: doubleTapGestureRecognizer)
     }
     
     @IBAction func closeButtonPressed() {
         dismiss(animated: true)
     }
+
+    @objc func handleSingleTap(recognizer: UITapGestureRecognizer) {
+        let targetAlpha: CGFloat = overlayView.alpha == 1 ? 0 : 1
+        UIView.animate(withDuration: 0.15, animations: { [weak self] in
+            self?.overlayView.alpha = targetAlpha
+        })
+        PagingViewController.overlayIsHidden = targetAlpha == 0
+    }
     
-    @objc func imageViewDoubleTapped(recognizer: UITapGestureRecognizer) {
+    @objc func handleDoubleTap(recognizer: UITapGestureRecognizer) {
         func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
             var zoomRect = CGRect.zero
             zoomRect.size.height = imageView.frame.size.height / scale
@@ -117,7 +137,7 @@ extension ImageViewerController: UIGestureRecognizerDelegate {
         return abs(velocity.y) > abs(velocity.x)
     }
 
-    @objc func scrollViewDidSwipeToDismiss(_ recognizer: UIPanGestureRecognizer) {
+    @objc func handleSwipe(_ recognizer: UIPanGestureRecognizer) {
 
         /// A deliberate UX decision...you have to zoom back in to scale 1 to be able to swipe to dismiss. It is difficult for the user to swipe to dismiss from images larger then screen bounds because almost all the time it's not swiping to dismiss but instead panning a zoomed in picture on the canvas.
         guard scrollView.zoomScale == scrollView.minimumZoomScale else { return }
