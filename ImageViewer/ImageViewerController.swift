@@ -11,14 +11,14 @@ public final class ImageViewerController: UIViewController {
     private let thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
     private let swipeToDismissRecognizer = UIPanGestureRecognizer()
 
-    private var image: UIImage?
+    private var image: Image?
     private var swipingToDismiss = false
     private var swipeToDismissTransition: GallerySwipeToDismissTransition?
 
     var controllerIsSwipingToDismiss: ((_ distanceToEdge: CGFloat) -> Void)?
     var controllerDidDismissViaSwipe: (() -> Void)?
     
-    public init(image: UIImage) {
+    public init(image: Image) {
         self.image = image
         super.init(nibName: String(describing: type(of: self)), bundle: Bundle(for: type(of: self)))
     }
@@ -29,11 +29,16 @@ public final class ImageViewerController: UIViewController {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        imageView.image = image
 
-        imageView.sd_setImage(with: URL(string: "https://picsum.photos/200/300")!) { (_, error, _, url) in
-            print("URL: \(url)")
-            print("Error: \(error)")
+        if let image = image?.image {
+            imageView.image = image
+        } else if let url = image?.url {
+            imageView.sd_setImage(with: url) { (image, error, _, _) in
+                self.imageView.image = image
+                self.view.setNeedsLayout()
+            }
+        } else {
+            imageView.image = nil
         }
         
         setupScrollView()
@@ -71,12 +76,12 @@ private extension ImageViewerController {
         let doubleTapGestureRecognizer = UITapGestureRecognizer()
         doubleTapGestureRecognizer.numberOfTapsRequired = 2
         doubleTapGestureRecognizer.addTarget(self, action: #selector(handleDoubleTap))
-        scrollView.addGestureRecognizer(doubleTapGestureRecognizer)
+        view.addGestureRecognizer(doubleTapGestureRecognizer)
 
         let singleTapGestureRecognizer = UITapGestureRecognizer()
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         singleTapGestureRecognizer.addTarget(self, action: #selector(handleSingleTap))
-        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
+        view.addGestureRecognizer(singleTapGestureRecognizer)
         singleTapGestureRecognizer.require(toFail: doubleTapGestureRecognizer)
 
         swipeToDismissRecognizer.addTarget(self, action: #selector(handleSwipe))

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8934CB362118C53E000BBF0E /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8934CB352118C53E000BBF0E /* Image.swift */; };
 		897C7D7A21124B8900FF71C0 /* SwipeToDismissTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897C7D7921124B8900FF71C0 /* SwipeToDismissTransitions.swift */; };
 		8990BF3B2113A9FE007F8F21 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8990BF3A2113A9FD007F8F21 /* SDWebImage.framework */; };
 		8990BF3C2113AA0B007F8F21 /* SDWebImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8990BF3A2113A9FD007F8F21 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -64,6 +65,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8934CB352118C53E000BBF0E /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		897C7D7921124B8900FF71C0 /* SwipeToDismissTransitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToDismissTransitions.swift; sourceTree = "<group>"; };
 		8990BF3A2113A9FD007F8F21 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
 		89F2422D211108EB00D033BC /* PagingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingViewController.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 				A02EE5CB1EF16EBE000EAB41 /* Info.plist */,
 				A02EE5CD1EF172C3000EAB41 /* Utilities.swift */,
 				897C7D7921124B8900FF71C0 /* SwipeToDismissTransitions.swift */,
+				8934CB352118C53E000BBF0E /* Image.swift */,
 				A08B781E1EF16CCF00F8C5BC /* ImageViewerController */,
 				89F2422C2111079E00D033BC /* PagingViewController */,
 				A03518711EDD6C7D00AAE484 /* Resources */,
@@ -380,6 +383,7 @@
 				A0BF70B71EDC758300109F6E /* ImageViewerController.swift in Sources */,
 				897C7D7A21124B8900FF71C0 /* SwipeToDismissTransitions.swift in Sources */,
 				89F2422F211108EB00D033BC /* PagingViewController.swift in Sources */,
+				8934CB362118C53E000BBF0E /* Image.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
