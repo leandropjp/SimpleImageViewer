@@ -5,7 +5,7 @@ public final class ImageViewerController: UIViewController {
 
     @IBOutlet fileprivate var scrollView: UIScrollView!
     @IBOutlet fileprivate var imageView: UIImageView!
-    @IBOutlet fileprivate var overlayView: UIView!
+    @IBOutlet fileprivate var overlayViews: [UIView]!
     @IBOutlet fileprivate var activityIndicator: UIActivityIndicatorView!
 
     private let thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
@@ -14,6 +14,10 @@ public final class ImageViewerController: UIViewController {
     private var image: Image?
     private var swipingToDismiss = false
     private var swipeToDismissTransition: GallerySwipeToDismissTransition?
+
+    private var overlayAlpha: CGFloat = 1 {
+        didSet { overlayViews.forEach { $0.alpha = overlayAlpha } }
+    }
 
     var controllerIsSwipingToDismiss: ((_ distanceToEdge: CGFloat) -> Void)?
     var controllerDidDismissViaSwipe: (() -> Void)?
@@ -50,7 +54,7 @@ public final class ImageViewerController: UIViewController {
 
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        overlayView.alpha = PagingViewController.overlayIsHidden ? 0 : 1
+        overlayAlpha = PagingViewController.overlayIsHidden ? 0 : 1
     }
 
     public override func viewDidDisappear(_ animated: Bool) {
@@ -95,9 +99,18 @@ private extension ImageViewerController {
     }
 
     @objc func handleSingleTap(recognizer: UITapGestureRecognizer) {
-        let targetAlpha: CGFloat = overlayView.alpha == 1 ? 0 : 1
+        // If we're zoomed in, zoom out. Otherwise, toggle the overlay on/off
+        if scrollView.zoomScale > scrollView.minimumZoomScale {
+            scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
+        } else {
+            toggleOverlay(visible: overlayAlpha == 0)
+        }
+    }
+
+    private func toggleOverlay(visible: Bool) {
+        let targetAlpha: CGFloat = visible ? 1 : 0
         UIView.animate(withDuration: 0.15, animations: { [weak self] in
-            self?.overlayView.alpha = targetAlpha
+            self?.overlayAlpha = targetAlpha
         })
         PagingViewController.overlayIsHidden = targetAlpha == 0
     }
@@ -115,10 +128,9 @@ private extension ImageViewerController {
 
         if scrollView.zoomScale > scrollView.minimumZoomScale {
             scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
-            scrollView.isScrollEnabled = false
         } else {
+            toggleOverlay(visible: false)
             scrollView.zoom(to: zoomRectForScale(scale: scrollView.maximumZoomScale, center: recognizer.location(in: recognizer.view)), animated: true)
-            scrollView.isScrollEnabled = true
         }
     }
 }
@@ -134,6 +146,22 @@ extension ImageViewerController: UIScrollViewDelegate {
         let verticalInsets = -(scrollView.contentSize.height - max(imageViewSize.height, scrollView.bounds.height)) / 2
         let horizontalInsets = -(scrollView.contentSize.width - max(imageViewSize.width, scrollView.bounds.width)) / 2
         scrollView.contentInset = UIEdgeInsets(top: verticalInsets, left: horizontalInsets, bottom: verticalInsets, right: horizontalInsets)
+    }
+
+    // Always hide the overlay before zooming
+    public func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        toggleOverlay(visible: false)
+    }
+
+    public func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        // Hide overlay & enable scrolling after zooming in; show overlay & disable scrolling after zooming out
+        if scrollView.zoomScale > scrollView.minimumZoomScale {
+            toggleOverlay(visible: false)
+            scrollView.isScrollEnabled = true
+        } else {
+            toggleOverlay(visible: true)
+            scrollView.isScrollEnabled = false
+        }
     }
 }
 
