@@ -54,9 +54,6 @@
                             <state key="normal" image="thumbsUp">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <connections>
-                                <action selector="closeButtonPressed" destination="-1" eventType="touchUpInside" id="oS4-fB-v8J"/>
-                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="32 people like this" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thC-BY-8Wt">
                             <rect key="frame" x="68" y="33" width="292" height="20"/>
@@ -65,7 +62,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.404571963028169" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="thC-BY-8Wt" secondAttribute="trailing" constant="15" id="Fe6-f8-GX9"/>
                         <constraint firstItem="thC-BY-8Wt" firstAttribute="leading" secondItem="d6w-Sz-7EB" secondAttribute="trailing" constant="20" id="Ml1-x8-btK"/>

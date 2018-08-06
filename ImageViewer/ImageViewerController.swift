@@ -48,7 +48,7 @@ public final class ImageViewerController: UIViewController {
         setupScrollView()
         setupGestureRecognizers()
 
-        // Disable scrolling when fully zoomed out (which we are by default)
+        // Disable scrolling when fully zoomed out (which we are by default) to prevent scroll view from intercepting swipe to dismiss. Re-enable it when zoomed in (below) to allow panning the zoomed in image
         scrollView.isScrollEnabled = false
     }
 
