@@ -42,7 +42,7 @@ public class PagingViewController: UIPageViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        self.dataSource = self
+        self.dataSource = pages.count > 1 ? self : nil // We disable horizontal swiping between pages (by setting the datasource to nil) when there's only one image
 
         if let initialIndex = initialIndex, initialIndex < pages.count {
             setViewControllers([pages[initialIndex]], direction: .forward, animated: true, completion: nil)
